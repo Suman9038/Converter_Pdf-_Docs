@@ -33,12 +33,22 @@ def register(user: schema.userRegistration, users_collection: Collection = Depen
 
 
 @router.post("/login", response_model=schema.TokenResponse)
-def login(user_credentials: OAuth2PasswordRequestForm= Depends(), users_collection: Collection= Depends(get_users_collection)) :
-    user= users_collection.find_one({"username" : user_credentials.username})
-    if not user :
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,detail=f"Invalid credentials")
-    if not utils.verify(user_credentials.password, user["password"]) :
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,detail=f"Invalid credentials")
-    
+def login(user_credentials: OAuth2PasswordRequestForm = Depends(), users_collection: Collection = Depends(get_users_collection)):
+    # Case insensitive query
+    user = users_collection.find_one({"username": user_credentials.username})
+
+    # user = users_collection.find_one({"username": {"$regex": f"^{user_credentials.username}$", "$options": "i"}})
+
+    # print("User Query:", user_credentials.username)  # Debugging ke liye
+    # print("User Found:", user)  # Yeh dekhne ke liye ki user mil raha ya nahi
+
+    if not user:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid credentials")
+
+    # print("Stored password in DB:", user.get("password", "No password found"))  # Debug ke liye
+
+    if not utils.verify(user_credentials.password, user["password"]):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid credentials")
+
     access_token = auth.create_token(data={"_id": str(user["_id"])})
-    return{"access_token" : access_token , "token_type" : "bearer"}
+    return {"access_token": access_token, "token_type": "bearer"}

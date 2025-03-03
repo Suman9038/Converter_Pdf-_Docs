@@ -38,7 +38,7 @@ class Authentication:
         
         return token_data
     
-    def get_current_user(self,token: str= Depends(oauth2_scheme)) :
+    def get_current_user(self, token: str= Depends(oauth2_scheme)) :
         credential_exception= HTTPException(status_code= status.HTTP_401_UNAUTHORIZED,
                                         detail=f"Token is missing,Please Login first",
                                         headers={"WWW-Authenticate": "Bearer"})

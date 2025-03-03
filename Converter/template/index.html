@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Converter</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/style.css')}}" />
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+
+<body>
+    <div id="app"></div>
+
+    <script src="{{ url_for('static', path='js/config.js')}}"></script>
+    <script src="{{ url_for('static', path='js/auth.js')}}"></script>
+    <script src="{{ url_for('static', path='js/converter.js')}}"></script>
+    <script src="{{ url_for('static', path='js/app.js')}}"></script>
+    <script>
+        $(document).ready(() => {
+            app.init();  //  App ko initialize karna
+        }); w
+    </script>
+
+</body>
+
+</html>

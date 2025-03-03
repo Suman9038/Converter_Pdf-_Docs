@@ -23,7 +23,7 @@ class TokenData(BaseModel) :
 
 def user_serializer(user) -> dict:
     return {
-        "id": str(user["_id"]),  
-        "username": user["username"],  
-        "created_at": user["created_at"].isoformat() if "created_at" in user else None  
+        "id": str(user["_id"]),
+        "username": user.get("username") ,
+        "created_at": user.get("created_at").isoformat() if user.get("created_at") else None  
     }
